@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+    <h3>Create News Item</h3>
+    	<div class="panel panel-default">
+    		<form (ngSubmit)="submitNews()">
+    		  <label>Title :</label> 
+    			<input type="text" name="title" class="form-control" placeholder="Enter news title" [(ngModel)]="title" (ngModelChange)="titlechange()" [ngClass]="errtitle ? 'border' : ''">
+    			<span class="err" *ngIf="errtitle">* Title required</span>
+    			<br>
+    		  <label>Body :</label> 
+    			<br>
+    			<textarea class="form-control" name="body" rows="10" cols="61" placeholder="Enter news body here" [(ngModel)]="body" (ngModelChange)="bodychange()" [ngClass]="errbody ? 'border' : ''"></textarea>
+          <input type="hidden" name="hidden_obj" [(ngModel)]="object">
+          <input type="hidden" name="hidden_i" [(ngModel)]="edit_index">
+    			<span class="err" *ngIf="errbody">* Body required</span><br>
+    			<button type="submit" class="btn btn-info" *ngIf="!editnewsitem">Publish</button>
+          <button type="submit" class="btn btn-success" *ngIf="editnewsitem">Update</button>
+    		</form>
+    	</div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="text-center">News Feed</h3>
+      <div>
+      	<div *ngFor="let news of news; let i = index" class="news_item">
+      		<h4><b>{{news.title}}</b></h4>
+      		<p>{{news.body}}</p>
+          <button class="btn btn-xs btn-primary" (click)="editNewsItem(news,i)">Edit</button>
+          <button class="btn btn-xs btn-danger" (click)="delNewsItem(news,i)">Delete</button>
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>

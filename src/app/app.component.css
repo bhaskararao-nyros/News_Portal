@@ -1,0 +1,20 @@
+.panel-body h4 {
+	padding: 5px;
+	background-color: #d9edf7;
+	border:1px solid #d9edf7;
+	border-radius: 5px;
+	animation: ease-in;
+	transition-duration: 0.5s;
+}
+.navbar-nav li a:active, .navbar-nav li a:focus {
+	background-color: #ccc;
+}
+.navbar-default {
+	border-radius: 0px;
+	background-color: skyblue;
+}
+.navbar-brand, .navbar-brand:hover {
+	background-color: mediumblue;
+	color: #fff;
+	font-weight: bold;
+}
