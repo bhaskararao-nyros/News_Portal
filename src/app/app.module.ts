@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { CreateComponent } from './create/create.component';
+import { FilterPipe } from './filter.pipe';
 
 
 const appRoutes: Routes = [
@@ -29,7 +30,8 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     AboutComponent,
-    CreateComponent
+    CreateComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

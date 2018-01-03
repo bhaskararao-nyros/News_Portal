@@ -7,14 +7,19 @@
 	transition-duration: 0.5s;
 }
 .navbar-nav li a:active, .navbar-nav li a:focus {
-	background-color: #ccc;
+	background-color: #fff;
+	color: black;
+}
+.navbar-nav li a {
+	color: #fff;
 }
 .navbar-default {
 	border-radius: 0px;
-	background-color: skyblue;
+	background-color: #59a9ea;
+	color: #fff;
 }
 .navbar-brand, .navbar-brand:hover {
-	background-color: mediumblue;
+	background-color: #0c7beb;
 	color: #fff;
 	font-weight: bold;
 }
