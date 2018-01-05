@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsService } from '../news.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-create',
@@ -8,6 +9,7 @@ import { NewsService } from '../news.service';
 })
 export class CreateComponent implements OnInit {
 	news = [];
+  now = moment().format('LLLL');
 	errtitle = false;
 	errbody = false;
   editnewsitem = false;		
@@ -15,18 +17,23 @@ export class CreateComponent implements OnInit {
 	body = '';
   edit_index:number;
   object = '';
-
+  selectCat:string;
+  categories = ["National","International","World","Sports","Entertainment","Technology","Business"];
   constructor(private newsService:NewsService) { }
 
   ngOnInit() {
     this.news = this.newsService.getAllNews();
+    this.selectCat = this.categories[0];
   }
 
+  //create news item function
   submitNews() {
   	var title = this.title;
   	var body = this.body;
     var index = this.edit_index;
-    var data = JSON.stringify({title:title,body:body,index:index});
+    var records = [];
+    var data = JSON.stringify({title:title,body:body,index:index,category:this.selectCat,time:this.now});
+
     
   	if (title == "" && body == "" ) {
   		this.errtitle = true;
@@ -39,7 +46,8 @@ export class CreateComponent implements OnInit {
       if (this.editnewsitem) {
 
         this.newsService.updateNewsItem(data).then((res)=> {
-          console.log(res);
+          // console.log(res);
+          localStorage.setItem("records", JSON.stringify(res));
           this.editnewsitem = false;
           this.title = '';
           this.body = '';
@@ -50,7 +58,8 @@ export class CreateComponent implements OnInit {
       else {
 
         this.newsService.createNewsItem(data).then((res)=> {
-          console.log(res);
+          // console.log(res);
+          localStorage.setItem("records", JSON.stringify(res));
           this.title = '';
           this.body = '';
         },(err)=> {
@@ -67,6 +76,7 @@ export class CreateComponent implements OnInit {
   	this.errbody = false;
   }
 
+  //edit news item function
   editNewsItem(n,i) {
     this.title = n.title;
     this.body = n.body;
@@ -75,6 +85,7 @@ export class CreateComponent implements OnInit {
     this.edit_index = i;
   }
 
+  //delete news item function
   delNewsItem(n,i) {
     this.news.splice(i,1);
   }

@@ -8,6 +8,11 @@
     			<input type="text" name="title" class="form-control" placeholder="Enter news title" [(ngModel)]="title" (ngModelChange)="titlechange()" [ngClass]="errtitle ? 'border' : ''">
     			<span class="err" *ngIf="errtitle">* Title required</span>
     			<br>
+          <label>Category :</label> 
+          <select [(ngModel)]="selectCat" name="category" class="form-control" required>
+            <option *ngFor="let category of categories" [ngValue]="category">{{category}}
+            </option>
+          </select><br>
     		  <label>Body :</label> 
     			<br>
     			<textarea class="form-control" name="body" rows="10" cols="61" placeholder="Enter news body here" [(ngModel)]="body" (ngModelChange)="bodychange()" [ngClass]="errbody ? 'border' : ''"></textarea>
@@ -23,8 +28,11 @@
       <h3 class="text-center">News Feed</h3>
       <div>
       	<div *ngFor="let news of news; let i = index" class="news_item">
-      		<h4><b>{{news.title}}</b></h4>
+      		<h4><b>{{news.title | uppercase}}</b></h4>
       		<p>{{news.body}}</p>
+          <div class="pull-right">
+            <span>{{news.category | uppercase}}</span> <span> {{news.time}}</span>
+          </div>
           <button class="btn btn-xs btn-primary" (click)="editNewsItem(news,i)">Edit</button>
           <button class="btn btn-xs btn-danger" (click)="delNewsItem(news,i)">Delete</button>
       	</div>

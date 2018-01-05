@@ -33,6 +33,7 @@
     "mongoose": "^4.13.7",
     "ngx-bootstrap": "^2.0.0-rc.0",
     "rxjs": "^5.5.2",
+    "time-ago-pipe": "^1.2.1",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

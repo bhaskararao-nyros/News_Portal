@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="col-md-12">
     <div class="input-group search_bar">
-      <input type="text" class="form-control" placeholder="Search">
+      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
       <div class="input-group-btn">
-        <button class="btn btn-default" type="submit">
+        <button class="btn btn-default" type="submit" (click)="searchItem()">
           <i class="glyphicon glyphicon-search"></i>
         </button>
       </div>
@@ -20,12 +20,12 @@
     <h3>Latest News</h3>
     <!-- display news items block before sorting -->
       <div class="news_item_blk" *ngIf="!sortNews">
-        <div class="breadcrumb news_item" *ngFor="let news of news_r">
+        <div class="breadcrumb news_item" *ngFor="let news of news_r | filter1:searchText">
           <h4 (click)="openModal(template,news)"><b>{{news.title | uppercase}}</b></h4>
           <p>{{news.body}}</p>
           <footer> 
           <!-- <i class="material-icons thumb_up">thumb_up</i> -->
-          <span>{{now}}</span>
+          <span>{{news.time | timeAgo}}</span>
           <span class="pull-right">--published by Bhaskararao</span>
           </footer>
         </div>
@@ -38,7 +38,7 @@
           <p>{{news.body}}</p>
           <footer> 
           <!-- <i class="material-icons thumb_up">thumb_up</i> -->
-          <span>{{now}}</span>
+          <span>{{news.time | timeAgo}}</span>
           <span class="pull-right">--published by Bhaskararao</span>
           </footer>
         </div>
@@ -48,7 +48,7 @@
     <!-- most viewed news block -->
     <div class="col-md-3 popular_news_blk">
       <h3>Most Viewed</h3>
-      <div class="row popular_news" *ngFor="let news of news_seen | filter:'count'">
+      <div class="row popular_news" *ngFor="let news of news_seen | filter">
         <div class="col-md-3 image">
           <img src="../assets/images/news1.jpg" width="70">
         </div>
@@ -60,19 +60,19 @@
   </div>
 
      <!-- modal to display news items -->
-    <ng-template #template>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">{{news_modal.title | uppercase}}</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{news_modal.body}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
-      </div>
-    </ng-template>
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">{{news_modal.title | uppercase}}</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{news_modal.body}}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Close</button>
+    </div>
+  </ng-template>
 
 </div>

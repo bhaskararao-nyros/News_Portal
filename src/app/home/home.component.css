@@ -10,7 +10,7 @@
 	border-bottom: 2px solid wheat;
 	padding-bottom: 5px;
 	color: wheat;
-	/*font-family: "headerfont";*/
+	font-family: "headerfont";
 }
 .news_item h4:hover {
 	opacity: 1;
