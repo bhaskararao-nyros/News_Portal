@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 
 var NewsSchema = new mongoose.Schema({
-  title: String,
-  body: String,
-  updated_at: { type: Date, default: Date.now },
+  	title: { type: String },
+    body:{ type:String },
+    cat_id: { type: String },
+    }, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('News', NewsSchema);

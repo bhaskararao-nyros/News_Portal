@@ -1,33 +1,92 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class NewsService {
+	url = "http://10.90.90.55:3000";
 
-  constructor() { }
-  news = [{title:"Economy looking up, says Jaitley ",body:"Union Finance Minister Arun Jaitley said in the Rajya Sabha"+
-  "on Thursday that key economic indicators were showing an upward swing.Mr. Jaitley assured"+
-  "the members that a positive impact of the bold reforms like the Goods and Services Tax and"+
-  "demonetisation would get reflected in the medium to long term."+
-  "However, the Congress attacked the BJP government over what it termed a “gasping” economy.",category:"National",count:1,time:"Friday, January 5, 2018 8:20 AM"}];
 
+  constructor(private http: Http) { }
+
+
+  // Get news on load
   getAllNews() {
-  	return this.news;
+    return this.http.get(this.url+"/getNews")
+    .map(res => res.json());
   }
 
-  updateNewsItem(data) {
-  	return new Promise((resolve, reject) => {
-  		var news_item = JSON.parse(data);
-  		this.news.splice(news_item.index, 1, {title:news_item.title, body:news_item.body, category:news_item.category,count:1, time:news_item.time});
-  		resolve(this.news);
-  	});
+  // Get categories on load
+  getAllNewsCat() {
+  	return this.http.get(this.url+"/getCategories")
+    .map(res => res.json());
   }
 
-  createNewsItem(data) {
-  	return new Promise((resolve, reject) => {
-  		var news_item = JSON.parse(data);
-  		this.news.push({title:news_item.title, body:news_item.body, category:news_item.category,count:1, time:news_item.time});
-  		resolve(this.news);
-  	});
+  // Add news item
+  addNewsItem(news) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    var url = this.url+"/addNews";
+
+    return this.http.post(url,news,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Delete news item
+  delNewsItem(news) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/deleteNews";
+
+    return this.http.post(url,news,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Update news item
+  updateNewsItem(news) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/updateNews";
+
+    return this.http.post(url,news,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Sort news by category
+  sortNews(cat) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/sortNews";
+
+    return this.http.post(url,cat,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Insert news into news seen modal
+  addedToNewsSeen(news) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/addtoNewsSeen";
+
+    return this.http.post(url,news,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Get all news seen items
+  getAllNewsSeen() {
+    return this.http.get(this.url+"/getAllNewsSeen")
+    .map(res => res.json());
+  }
+
+  // Delete News Seen Item
+  delNewsSeenItem(news_seen) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/delNewsSeen";
+
+    return this.http.post(url,news_seen,{headers:headers})
+    .map(res => res.json());
   }
 
 }

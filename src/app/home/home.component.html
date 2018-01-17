@@ -1,59 +1,73 @@
 <div class="container-fluid">
   <div class="col-md-12">
     <div class="input-group search_bar">
-      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+      <ng2-completer [ngClass]="form-control" (keyup)="searchinputchange()" [(ngModel)]="searchStr" [datasource]="dataService" [minSearchLength]="0" (selected)="onNewsItemSelect($event)"></ng2-completer>
       <div class="input-group-btn">
-        <button class="btn btn-default" type="submit" (click)="searchItem()">
+        <button class="btn btn-default disabled" type="submit" (click)="searchItem()">
           <i class="glyphicon glyphicon-search"></i>
         </button>
       </div>
-    </div>
+    </div><br>
     <!-- news categories block -->
-    <div class="col-md-3 categories">
-      <h3>News By Type</h3>
+    <div class="categories">
       <ul>
-        <li class="cat" *ngFor="let category of categories; let i = index" (click)="sortNewsItems(category,i)" [ngClass]="{'cat_active':toggleClass === category}"><img src="../assets/images/news.jpg" width="70"><h4>{{category}}</h4></li>
+        <li class="cat" (click)="sortNewsItems()" [ngClass]="{'cat_active':toggleClass === 'all'}">
+        <!-- <img src="../assets/images/news.jpg" width="70"> -->
+        <h4>ALL</h4></li>
+        <li class="cat" *ngFor="let category of categories; let i = index" (click)="sortNewsItems(category)" [ngClass]="{'cat_active':toggleClass === category._id}">
+        <!-- <img src="../assets/images/news.jpg" width="70"> -->
+        <h4>{{category.name | uppercase}}</h4></li>
       </ul>
     </div>
+    <div class="marquee_blk">
+      <span class="latest_caption"><b>Latest >></b></span>
+      <marquee [attr.scrollamount]="scrollAmount" behavior="scroll" direction="left" >  
+        <span class="marquee_items" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" *ngFor="let news of news_r | slice:0:5;" (click)="onClickMarquee(news)"><span class="badge marquee_badge">*New</span>{{news.title}}</span>
+      </marquee>
+    </div>
 
-    <div class="col-md-6 latest_news">
-    <h3>Latest News</h3>
-    <!-- display news items block before sorting -->
-      <div class="news_item_blk" *ngIf="!sortNews">
-        <div class="breadcrumb news_item" *ngFor="let news of news_r | filter1:searchText">
-          <h4 (click)="openModal(template,news)"><b>{{news.title | uppercase}}</b></h4>
-          <p>{{news.body}}</p>
-          <footer> 
-          <!-- <i class="material-icons thumb_up">thumb_up</i> -->
-          <span>{{news.time | timeAgo}}</span>
-          <span class="pull-right">--published by Bhaskararao</span>
-          </footer>
+    <div class="col-md-8 latest_news">
+      <!-- Latest News Marquee block -->
+      <div class="col-md-12" style="margin-top: 15px;margin-bottom: -10px;">
+        <div class="col-md-6">
+          <p style="font-size: 24px;color: #fff;">Latest News</p>
+        </div>
+        <div class="col-md-6">
+          <select name="selectSort" class="form-control news_sort" [(ngModel)]="selectSort" (change)="sortByNewest()">
+            <option value="new">News-Newest</option>
+            <option value="old">News-Oldest</option>
+          </select>
         </div>
       </div>
-
-    <!-- display news items block after sorting -->
-      <div class="news_item_blk" *ngIf="sortNews">
-        <div class="breadcrumb news_item" *ngFor="let news of news_sort">
-          <h4 (click)="openModal(template,news)"><b>{{news.title | uppercase}}</b></h4>
-          <p>{{news.body}}</p>
-          <footer> 
-          <!-- <i class="material-icons thumb_up">thumb_up</i> -->
-          <span>{{news.time | timeAgo}}</span>
-          <span class="pull-right">--published by Bhaskararao</span>
-          </footer>
+    <!-- display news items block before sorting -->
+      <div class="news_item_blk">
+        <div class="breadcrumb news_item" *ngFor="let news of news_r">
+            <h4 (click)="openModal(template,news)"><b>{{news.title | uppercase}}</b></h4>
+            <p>{{news.body}}</p>
+            <footer> 
+              <span *ngFor="let category of categories">
+              <span *ngIf="category._id === news.cat_id">{{news.createdAt | timeAgo}} | {{news.createdAt | date:'fullDate'}} | <span class="badge cat_badge">{{category.name}}</span></span></span>
+              <span class="pull-right">--posted by Admin</span>
+            </footer>
         </div>
       </div>
     </div>
 
     <!-- most viewed news block -->
-    <div class="col-md-3 popular_news_blk">
+    <div class="col-md-4 popular_news_blk">
       <h3>Most Viewed</h3>
-      <div class="row popular_news" *ngFor="let news of news_seen | filter">
-        <div class="col-md-3 image">
-          <img src="../assets/images/news1.jpg" width="70">
-        </div>
-        <div class="col-md-9 article">
-          <h5 (click)="openModal(template,news)">{{news.title}}</h5>
+      <div *ngFor="let news_s of news_seen | filter">
+        <div *ngFor="let news of news_r">
+          <div *ngIf="news_s.news_id === news._id">
+            <div class="row popular_news">
+              <div class="col-md-3 image">
+                <img src="../assets/images/news1.jpg" width="70">
+              </div>
+              <div class="col-md-9 article">
+                <h5 (click)="openModal(template,news)">{{news.title}}</h5>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

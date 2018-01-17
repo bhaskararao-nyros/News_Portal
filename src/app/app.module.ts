@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpModule } from "@angular/http";
 
 import { NewsService } from './news.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,14 +15,18 @@ import { AppComponent } from './app.component';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-//importing components
+
+// Importing components
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { CreateComponent } from './create/create.component';
-//import filter
+
+// Import filter
 import { FilterPipe } from './filter.pipe';
-import { FilterPipe1 } from './filter.pipe';
 import {TimeAgoPipe} from 'time-ago-pipe';
+
+// Auto-complete
+import { Ng2CompleterModule } from "ng2-completer";
 
 
 const appRoutes: Routes = [
@@ -39,7 +44,6 @@ const appRoutes: Routes = [
     AboutComponent,
     CreateComponent,
     FilterPipe,
-    FilterPipe1,
     TimeAgoPipe
   ],
   imports: [
@@ -47,6 +51,8 @@ const appRoutes: Routes = [
     ModalModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     FormsModule,
+    HttpModule,
+    Ng2CompleterModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatCheckboxModule,

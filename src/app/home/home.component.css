@@ -10,7 +10,7 @@
 	border-bottom: 2px solid wheat;
 	padding-bottom: 5px;
 	color: wheat;
-	font-family: "headerfont";
+	/*font-family: "headerfont";*/
 }
 .news_item h4:hover {
 	opacity: 1;
@@ -73,11 +73,13 @@ footer span:hover {
 }
 .categories ul li {
 	list-style: none;
-	margin-left: -38px;
-	display: flex;
+	margin-left: 9px;
+	display: inline-flex;
 	background-color: #fff;
 	margin-bottom: 10px;
-	box-shadow: 2px 2px 2px 2px lightblue;
+	box-shadow: 0px 1px 3px 6px lightblue;
+	width: 11%;
+	padding: 0px 5px;
 }
 .categories ul li:hover {
 	cursor: pointer;
@@ -96,16 +98,37 @@ footer span:hover {
 }
 .categories ul li h4 {
 	margin-top: 15px;
+	font-size: 15px;
+	display: block;
+	width: 100%;
+	text-align: center;
 }
 .categories h3, .latest_news h3, .popular_news_blk h3 {
 	color: #fff;
+}
+
+.categories {
+	padding: 20px 0px 1px;
+	border-bottom: 1px solid #fff;
 }
 .search_bar {
 	width: 70%;
 	margin-left: 200px;
 }
-.search_bar input {
+/deep/ .completer-input {
+	display: block;
+	width: 100%;
 	height: 50px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .input-group-btn button {
 	padding: 12px;
@@ -125,4 +148,45 @@ footer span:hover {
 }
 .modal-content {
 	background-color: #a2bce5 !important;
+}
+
+/deep/ .completer-dropdown-holder div {
+	width: 95.1111% !important;
+	color: green !important;
+}
+.news_sort {
+	width: 50%;
+	float: right;
+}
+.marquee_items:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.marquee_blk {
+	height: 30px;background-color: #fff;padding-top: 5px;
+}
+.latest_caption {
+	position: absolute;
+	background-color: #f26157;
+	padding: 5px 20px 5px 20px;
+	margin-top: -6px;
+	z-index: 100;
+	color: white;
+}
+.marquee_items {
+	padding-right: 30px;
+	font-weight: bold;
+	color: #4d8cf2;
+}
+.marquee_badge {
+	border-radius: 0px;
+	background-color: #fff;
+	color: red;
+	font-size: 14px;
+}
+.cat_badge {
+	border-radius: 5px;
+	background-color: bisque !important;
+	color: black !important;
+	box-shadow: 0px 0px 2px 2px inset;
 }

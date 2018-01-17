@@ -4,9 +4,25 @@
 }
 .news_item {
 	background-color: #fff;
-	margin-bottom: 10px;
+	margin: 4px;
 	padding: 10px;
 	border-radius: 10px;
+}
+.news_item_visited {
+	background-color: #fff;
+	margin: 4px;
+	width: 31% !important;
+	height: 270px !important;
+	padding: 10px;
+	border-radius: 10px;
+}
+.news_item_visited h4 {
+	height: 39.6px !important;
+	overflow: hidden;
+}
+.news_item_visited p {
+	height: 160px !important;
+	overflow: hidden;
 }
 .err {
 	color: red;
@@ -17,4 +33,25 @@
 }
 .col-md-6 h3 {
 	color: #fff;
+}
+.news_items_blk {
+	height: 600px;
+	overflow: scroll;
+}
+.cat_badge {
+	background-color: dodgerblue !important;
+	border-radius: 2px !important;
+	opacity: 0.7;
+}
+#visited_news {
+	color: white;
+}
+.del_btn {
+	background-color: transparent;
+	border:none !important;
+	padding: 0px;
+}
+.glyphicon-remove-circle {
+	color: red;
+	font-size: 20px;
 }
