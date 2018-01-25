@@ -27,6 +27,7 @@ import {TimeAgoPipe} from 'time-ago-pipe';
 
 // Auto-complete
 import { Ng2CompleterModule } from "ng2-completer";
+import { CategoryComponent } from './category/category.component';
 
 
 const appRoutes: Routes = [
@@ -34,6 +35,7 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'create', component: CreateComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'category_management', component: CategoryComponent },
 ]
 
 
@@ -44,7 +46,8 @@ const appRoutes: Routes = [
     AboutComponent,
     CreateComponent,
     FilterPipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

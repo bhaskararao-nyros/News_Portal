@@ -10,6 +10,8 @@ const route = require('./routes/route');
 
 const port = 3000;
 
+mongoose.Promise = global.Promise;
+
 //connect to MongoDB
 // mongoose.connect('mongodb://localhost:27017/news');
 var promise = mongoose.connect('mongodb://localhost:27017/news', {

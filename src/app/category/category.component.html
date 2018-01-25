@@ -1,0 +1,29 @@
+<div class="container">
+	<h3 class="text-center">Category Management</h3>
+		<div>
+		  <ul class="categories_list">
+		  	<li><button class="btn btn-sm btn-warning add-cat-btn" (click)="addCategory()">Add</button></li>
+			  <li *ngIf="addCat"><input type="text" name="" class="form-control cat_text-box" (keydown)="addCatOnEnter($event)" [(ngModel)]="addCatText" placeholder="Enter category name"><span class="err" *ngIf="errCat">* Category required</span> </li>
+			  <li *ngIf="editCat"><input type="text" name="" class="form-control cat_text-box" (keydown)="editCatOnEnter($event)" [(ngModel)]="editCatText" placeholder="Enter category name"> </li>
+			  <li *ngFor="let category of categories; let i = index" id="cat_{{i}}"><a>{{category.name}} 
+			  <span class="pull-right"><button class="btn btn-xs btn-primary" (click)="editCategory(category)"><span class="glyphicon glyphicon-edit"></span></button>
+			  <button class="btn btn-xs btn-danger" (click)="delCategory(category._id)"><span class="glyphicon glyphicon-trash"></span></button>
+			  <button class="btn btn-xs btn-success" (click)="toggleSubCat(i)">
+			  <span *ngIf="toggleBtn && indexa === i" class="glyphicon glyphicon-chevron-up"></span>
+			  <span *ngIf="!toggleBtn || indexa !== i" class="glyphicon glyphicon-chevron-down"></span>
+			  </button>
+			  </span></a>
+				  <ul class="sub-category" *ngIf="toggleBtn && indexa === i">
+				  	<li><span class="glyphicon glyphicon-minus"></span> <button class="btn btn-xs btn-info" (click)="addSubCategory(category._id)"> Add Sub Category</button></li>
+				  	<li *ngIf="addSubCat"> <input type="text" name="" placeholder="Enter sub category" (keydown)="addSubCatOnEnter($event)" [(ngModel)]="addSubCatText" placeholder="Enter category name"> </li>
+				  	<li *ngIf="editSubCat"> <input type="text" name="" placeholder="Enter sub category" (keydown)="editSubCatOnEnter($event)" [(ngModel)]="editSubCatText" placeholder="Enter sub category name"> </li>
+				  	<li *ngFor="let subCat of sub_cats">
+				  	<p class="sub_cat_span" *ngIf="category._id === subCat.cat_id[0]">
+				  	<span class="glyphicon glyphicon-minus"></span> {{subCat.name}} <span class="pull-right"><button class="btn btn-xs btn-primary" (click)="editSubCategory(subCat)"><span class="glyphicon glyphicon-edit"></span></button>
+			  <button class="btn btn-xs btn-danger" (click)="delSubCategory(subCat._id)"><span class="glyphicon glyphicon-trash"></span></button></span></p></li>
+				  	
+				  </ul>
+			  </li>
+			</ul>
+		</div>
+</div>

@@ -83,10 +83,95 @@ export class NewsService {
   delNewsSeenItem(news_seen) {
     var headers = new Headers();
     headers.append('Content-Type','application/json');
-    let url = this.url+"/delNewsSeen";
+    let url = this.url+"/delNewsSeen/"+news_seen;
 
-    return this.http.post(url,news_seen,{headers:headers})
+    return this.http.get(url,{headers:headers})
     .map(res => res.json());
   }
 
+  // Add category
+  addCategory(cat) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/addCat/"+cat;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Delete category
+  deleteCat(cat_id) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/delCat/"+cat_id;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Edit category 
+  editCat(cat_id,catName) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/updateCat/"+cat_id+"/"+catName;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Add news sub category
+  addSubCateogry(cat_id,subCatName) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/addSubCat/"+cat_id+"/"+subCatName;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Get all news sub categories
+  getAllNewsSubCat() {
+    return this.http.get(this.url+"/getAllNewsSubCats")
+    .map(res => res.json());
+  }
+
+  // Get sub categories on select main category
+  fetchSubCat(cat_id) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/fetchSubCat/"+cat_id;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Edit sub category
+  editSubCateogry(sub_cat_id,subCatName) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/editSubCat/"+sub_cat_id+"/"+subCatName;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Delete sub category
+  deleteSubCat(sub_cat_id) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/delSubCat/"+sub_cat_id;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
+
+  // Sort by sub category
+  sortBySubCat(sub_cat_id) {
+    var headers = new Headers();
+    headers.append('Content-Type','application/json');
+    let url = this.url+"/sortNewsBySubCat/"+sub_cat_id;
+
+    return this.http.get(url,{headers:headers})
+    .map(res => res.json());
+  }
 }

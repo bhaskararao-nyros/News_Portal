@@ -1,5 +1,6 @@
 <div class="container-fluid">
   <div class="col-md-12">
+      <!-- SEARCH AUTO COMPLETE -->
     <div class="input-group search_bar">
       <ng2-completer [ngClass]="form-control" (keyup)="searchinputchange()" [(ngModel)]="searchStr" [datasource]="dataService" [minSearchLength]="0" (selected)="onNewsItemSelect($event)"></ng2-completer>
       <div class="input-group-btn">
@@ -8,26 +9,37 @@
         </button>
       </div>
     </div><br>
-    <!-- news categories block -->
-    <div class="categories">
-      <ul>
-        <li class="cat" (click)="sortNewsItems()" [ngClass]="{'cat_active':toggleClass === 'all'}">
-        <!-- <img src="../assets/images/news.jpg" width="70"> -->
-        <h4>ALL</h4></li>
-        <li class="cat" *ngFor="let category of categories; let i = index" (click)="sortNewsItems(category)" [ngClass]="{'cat_active':toggleClass === category._id}">
-        <!-- <img src="../assets/images/news.jpg" width="70"> -->
-        <h4>{{category.name | uppercase}}</h4></li>
-      </ul>
-    </div>
+    <!-- LATEST NEWS MARQUEE BLOCK -->
     <div class="marquee_blk">
       <span class="latest_caption"><b>Latest >></b></span>
       <marquee [attr.scrollamount]="scrollAmount" behavior="scroll" direction="left" >  
-        <span class="marquee_items" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" *ngFor="let news of news_r | slice:0:5;" (click)="onClickMarquee(news)"><span class="badge marquee_badge">*New</span>{{news.title}}</span>
+        <span class="marquee_items" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" *ngFor="let news of marquee_array | slice:0:5;" (click)="onClickMarquee(news)"><span class="badge marquee_badge">*New</span>{{news.title}}</span>
       </marquee>
     </div>
+    <!-- NEWS CATEGORIES BLOCK -->
+    <div class="categories col-md-3">
+    <p>News By Type</p>
+      <ul>
+        <li class="cat" (click)="toggleNewsItems()">
+        <a [ngClass]="{'cat_active':toggleClass === 'all'}" class="category_href">
+        <img src="../assets/images/news.jpg" width="70">
+        <h4>ALL</h4></a></li>
+        <li class="cat" *ngFor="let category of categories; let i = index">
+        <a [ngClass]="{'cat_active':toggleClass === category._id}" class="category_href" (click)="toggleNewsItems(category, i)">
+        <img src="../assets/images/news.jpg" width="70">
+        <h4>{{category.name | uppercase}}</h4></a>
+          <ul *ngIf="clickOnCat && indexa === i" class="sub-category">
+           <li *ngFor="let subCat of sub_cats_fetch" (click)="sortNewsItem(subCat)">
+            <span class="glyphicon glyphicon-minus"></span>
+            <a class="sub_cat_href" [ngClass]="{'active_subcat':subCatId === subCat._id}">
+            <span class="text-center">{{subCat.name | uppercase }}</span></a></li> 
+          </ul>
+        </li>
+      </ul>
+    </div>
 
-    <div class="col-md-8 latest_news">
-      <!-- Latest News Marquee block -->
+    <div class="col-md-6 latest_news">
+        <!-- SORTING NEWS BY LATEST AND OLDEST -->
       <div class="col-md-12" style="margin-top: 15px;margin-bottom: -10px;">
         <div class="col-md-6">
           <p style="font-size: 24px;color: #fff;">Latest News</p>
@@ -39,41 +51,41 @@
           </select>
         </div>
       </div>
-    <!-- display news items block before sorting -->
+    <!-- LATEST NEWS BLOCK -->
       <div class="news_item_blk">
         <div class="breadcrumb news_item" *ngFor="let news of news_r">
             <h4 (click)="openModal(template,news)"><b>{{news.title | uppercase}}</b></h4>
             <p>{{news.body}}</p>
             <footer> 
-              <span *ngFor="let category of categories">
-              <span *ngIf="category._id === news.cat_id">{{news.createdAt | timeAgo}} | {{news.createdAt | date:'fullDate'}} | <span class="badge cat_badge">{{category.name}}</span></span></span>
+              <span *ngFor="let subCat of sub_cats">
+              <span *ngIf="subCat._id === news.sc_id">{{news.createdAt | timeAgo}} | {{news.createdAt | date:'fullDate'}} | <span class="badge cat_badge">{{subCat.name}}</span></span></span>
               <span class="pull-right">--posted by Admin</span>
             </footer>
         </div>
       </div>
     </div>
 
-    <!-- most viewed news block -->
-    <div class="col-md-4 popular_news_blk">
+    <!-- MOST VIEWED NEWS BLOCK -->
+    <div class="col-md-3 popular_news_blk">
       <h3>Most Viewed</h3>
-      <div *ngFor="let news_s of news_seen | filter">
-        <div *ngFor="let news of news_r">
-          <div *ngIf="news_s.news_id === news._id">
+      <div *ngFor="let news_s of news_seen | filter ">
+        <!-- <div *ngFor="let news of news_r"> -->
+          <!-- <div *ngIf="news_s.news_id === news._id"> -->
             <div class="row popular_news">
               <div class="col-md-3 image">
                 <img src="../assets/images/news1.jpg" width="70">
               </div>
               <div class="col-md-9 article">
-                <h5 (click)="openModal(template,news)">{{news.title}}</h5>
+                <h5 (click)="openModal(template,news_s.news)">{{news_s.news.title}}</h5>
               </div>
             </div>
-          </div>
-        </div>
+          <!-- </div> -->
+        <!-- </div> -->
       </div>
     </div>
   </div>
 
-     <!-- modal to display news items -->
+     <!-- MODAL TO DISPLAY FULL NEWS DETAILS -->
   <ng-template #template>
     <div class="modal-header">
       <h4 class="modal-title pull-left">{{news_modal.title | uppercase}}</h4>

@@ -1,0 +1,40 @@
+.categories_list li a {
+	background-color: lightpink !important;
+	padding: 12px 15px !important;
+	display: inherit;
+	width: 25%;
+	border-radius: 5px;
+}
+.add-cat-btn {
+	font-size: 17px;
+	padding: 3px 21px;
+}
+.categories_list li {
+	list-style: none;
+	margin-top: 5px;
+}
+.cat_text-box {
+	width: 25%;
+}
+.sub_cat_text-box {
+	width: 20%;
+}
+.sub-category {
+	border-left: 3px solid #fff;
+	margin-left: 20px;
+}
+.sub-category li {
+	margin-left: -40px;
+	width: 16%;
+}
+.sub-category li .sub_cat_span {
+	padding: 5px 5px;
+	background-color: #fff;
+	border-radius: 0px 5px 5px 0px;
+}
+.glyphicon-minus {
+	color: #fff !important;
+}
+.err {
+	color: #fff;
+}

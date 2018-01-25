@@ -15,13 +15,20 @@ import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
 export class HomeComponent implements OnInit {
       now = moment().format('LLLL');
       sortNews = false;
-      toggleClass:string;
+      toggleClass;
       searchText:string;
       count = false;
+      clickOnCat = false;
+      subCatId;
       modalRef: BsModalRef;
       news_modal:any;
+      indexa;
       news_r=[];
+      search_array = [];
+      marquee_array = [];
       categories = [];
+      sub_cats_fetch = [];
+      sub_cats = [];
       selectSort = "old";
       scrollAmount:number = 4;
 
@@ -39,8 +46,15 @@ export class HomeComponent implements OnInit {
         this.modalRef = this.modalService.show(template);
         this.news_modal = news;
         this.newsService.addedToNewsSeen(news).subscribe(result => {
-          this.news_seen.push(result);
-          console.log(result)
+          console.log(result);
+          if (result instanceof Array) {
+            this.news_seen = [];
+            for (var i = 0; i < result.length; i++) {
+              this.news_seen.push({news:result[i].news_id[0],count:result[i].count});
+            }
+          } else {
+            this.news_seen.push({news:result});
+          }
         });
 
        // Calling filters
@@ -49,42 +63,79 @@ export class HomeComponent implements OnInit {
       }
 
   ngOnInit() {
+    // Get all news items
     this.newsService.getAllNews().subscribe(news => {
       this.news_r = news;
+      this.search_array = news;
+      this.marquee_array = news;
       // console.log(news);/
     });
+
+    // Get all news categories
     this.newsService.getAllNewsCat().subscribe(cats => this.categories = cats);
+
+    // Get all visited news
     this.newsService.getAllNewsSeen().subscribe(newsSeen => {
-      this.news_seen = newsSeen
-      console.log(newsSeen);
+      for (var i = 0; i < newsSeen.length; i++) {
+        this.news_seen.push({news:newsSeen[i].news_id[0],count:newsSeen[i].count});
+      }
+      // Calling filters
+     let filter = new FilterPipe();
+     filter.transform(this.news_seen);
+     
+    });
+
+    // Get all news sub categories
+    this.newsService.getAllNewsSubCat().subscribe(sub_cat => {
+      this.sub_cats = sub_cat;
+      // console.log(sub_cat);
     });
   }
 
-  // Sort news items by category
-  sortNewsItems(cat) {
+  // Toggle news items by category
+  toggleNewsItems(cat, i) {
+    this.subCatId = false;
     if (cat === undefined) {
       this.newsService.getAllNews().subscribe(news => {
         this.news_r = news;
+        this.clickOnCat = false;
       });
       this.toggleClass = "all";
     } else {
-      this.newsService.sortNews(cat).subscribe(result => {
-        this.news_r = result;
-        this.toggleClass = cat._id;
+      this.toggleClass = cat._id;
+      this.newsService.fetchSubCat(cat._id).subscribe(sub_cat => {
+        // console.log(sub_cat);
+        this.sub_cats_fetch = sub_cat;
+        if (i === this.indexa) {
+          this.clickOnCat = !this.clickOnCat;
+          if (!this.clickOnCat) {
+            this.toggleClass = false;
+          }
+          this.indexa = i;
+        } else {
+          this.clickOnCat = true;
+          this.indexa = i;
+        }
       });
     }
     
   }
 
+  // Sort news items by sub category
+  sortNewsItem(subCat) {
+    this.subCatId = subCat._id;
+    this.newsService.sortBySubCat(subCat._id).subscribe(news => {
+      this.news_r = news;
+    });
+  }
   // Search news item like auto-complete 
   searchinputchange() {
-    this.dataService = this.completerService.local(this.news_r, 'title', 'title');
+    this.dataService = this.completerService.local(this.search_array, 'title', 'title');
   }
 
   // Click on search news items list to get news details
   onNewsItemSelect(selected:CompleterItem) {
     if(selected) {
-      // console.log(selected.originalObject);
       this.news_r = [];
       this.news_r.push(selected.originalObject);
     }

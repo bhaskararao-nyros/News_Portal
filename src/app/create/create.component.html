@@ -1,11 +1,13 @@
 <div class="container">
-    <h4 *ngIf="toggleNewsPage" id="visited_news">Click here to view : <button class="btn btn-sm btn-success" (click)="togglePage()">
+          <!-- TOGGLE NEWS CREATION PAGE AND MOST VISITED NEWS PAGE -->
+    <h4 *ngIf="!toggleNewsPage" id="visited_news">Click here to view : <button class="btn btn-sm btn-success" (click)="togglePage()">
    Most Visited News</button></h4>
-   <h4 *ngIf="!toggleNewsPage" id="visited_news">Click here to view : <button class="btn btn-sm btn-success" (click)="togglePage()">
+   <h4 *ngIf="toggleNewsPage" id="visited_news">Click here to view : <button class="btn btn-sm btn-success" (click)="togglePage()">
    Create News</button></h4>
    <hr>
-   <div *ngIf="toggleNewsPage; then createNews else visited"></div>
+   <div *ngIf="toggleNewsPage; then visited else createNews"></div>
   <div class="row">
+                                  <!-- CREATE NEWS FORM STARTING -->
   <ng-template #createNews>
     <div class="col-md-6">
     <h3>Create News Item</h3>
@@ -15,6 +17,7 @@
     			<input type="text" name="title" class="form-control" placeholder="Enter news title" [(ngModel)]="title" (ngModelChange)="titlechange()" [ngClass]="errtitle ? 'border' : ''">
     			<span class="err" *ngIf="errtitle">* Title required</span>
     			<br>
+                              <!-- CATEGORY DROP DOWN  -->
           <label>Category :</label> 
           <select [(ngModel)]="selectCat" name="category" class="form-control" required [ngClass]="errcat ? 'border' : ''" (ngModelChange)="catchange()">
             <option value="select">Select</option>
@@ -22,6 +25,16 @@
             </option>
           </select>
           <span class="err" *ngIf="errcat">* Category required</span><br>
+                            <!-- SUB CATEGORY DROP DOWN -->
+          <label>Sub-Category :</label>
+          <select [(ngModel)]="selectSubCat" name="subcategory" class="form-control" required [ngClass]="errsubcat ? 'border' : ''" (ngModelChange)="subcatchange()">
+            <option value="select">Select</option>
+              <option [ngValue]="subCat._id" *ngFor="let subCat of sub_cats_fetch">  
+                {{subCat.name}}
+              </option>
+          </select>
+          <span class="err" *ngIf="errsubcat">* Sub-category required</span><br>
+                                      <!-- NEWS BODY  -->
     		  <label>Body :</label> 
     			<br>
     			<textarea class="form-control" name="body" rows="10" cols="61" placeholder="Enter news body here" [(ngModel)]="body" (ngModelChange)="bodychange()" [ngClass]="errbody ? 'border' : ''"></textarea>
@@ -31,17 +44,21 @@
           <button type="submit" class="btn btn-success" *ngIf="editnewsitem">Update</button>
     		</form>
     	</div>
-    </div>
+    </div>                            <!-- CREATE NEWS FORM ENDING -->
     <div class="col-md-6">
       <h3 class="text-center">News Feed</h3>
       <div class="news_items_blk">
       	<div *ngFor="let news of news; let i = index" class="news_item">
       		<h4><b>{{news.title | uppercase}}</b></h4>
       		<p>{{news.body}}</p>
-          <div class="pull-right">
-           <div *ngFor="let category of categories">
-             <span class="badge cat_badge">{{category._id === news.cat_id ? category.name : ''}}</span> 
-           </div> 
+          <div class="pull-right cat_subcat">
+            <div *ngFor="let category of categories">
+              <span class="badge cat_badge">{{category._id === news.cat_id ? category.name : ''}}</span> 
+            </div> 
+            <span>-</span>
+            <div *ngFor="let subCat of sub_cats">
+               <span class="badge sub_cat_badge" *ngIf="news.sc_id === subCat._id">{{ subCat.name }}</span>
+            </div>
           </div>
           <button class="btn btn-xs btn-primary" (click)="editNewsItem(news)">Edit</button>
           <button class="btn btn-xs btn-danger" (click)="delNewsItem(news)">Delete</button>
@@ -50,25 +67,29 @@
       </div>
     </div>
     </ng-template>
+                          <!-- MOST VISITED NEWS ITEMS BLOCK -->
     <ng-template #visited>
     <div>
       <h2 class="text-center">Most visited news</h2>
         <div class="news_items_blk">
           <div *ngFor="let news_s of news_seen">
-            <div *ngFor="let n of news">
-              <div *ngIf="news_s.news_id === n._id" class="news_item_visited col-md-4">
-                  <button class="btn btn-danger btn-sm pull-right del_btn" (click)="delNewsSeenItem(news_s)">
+              <div class="news_item_visited col-md-4">
+                  <button class="btn btn-danger btn-sm pull-right del_btn" (click)="delNewsSeenItem(news_s.news_seen_id)">
                   <span class="glyphicon glyphicon-remove-circle"></span></button>
-                  <h4><b>{{n.title | uppercase}}</b></h4>
-                  <p>{{n.body}}</p>
+                  <h4><b>{{news_s.news.title | uppercase}}</b></h4>
+                  <p>{{news_s.news.body}}</p>
                   <div class="text-center">
-                  <span> {{n.createdAt | date:'fullDate'}}</span>
+                  <span> {{news_s.news.createdAt | date:'fullDate'}}</span>
                    <span *ngFor="let category of categories">
-                     <span class="badge cat_badge">{{category._id === n.cat_id ? category.name : ''}}</span> 
+                     <span class="badge cat_badge">{{category._id === news_s.news.cat_id ? category.name : ''}}</span> 
                    </span> 
+                   <span *ngFor="let subCat of sub_cats">
+                     <span class="badge sub_cat_badge" *ngIf="news_s.news.sc_id === subCat._id">
+                       {{subCat.name}}
+                     </span>
+                   </span>
                 </div>
               </div>
-            </div>
           </div>  
       </div>
     </div>
